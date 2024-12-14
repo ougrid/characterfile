@@ -64,7 +64,7 @@ const main = async () => {
       outputFilePath = `${characterName}.knowledge.character.json`;
     }
 
-    character.knowledge = knowledge;
+    character.knowledge = knowledge; 
 
     writeJsonFile(outputFilePath, character);
 

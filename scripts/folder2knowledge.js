@@ -84,23 +84,26 @@ const getApiKey = async () => {
     process.exit(1);
   }
 };
-
+// Edited by Ougrid D. to return the document content and chunks
 const processDocument = async (filePath) => {
   console.log(`Processing file: ${filePath}`);
 
   let content;
+  let chunks = [];
   const fileExtension = path.extname(filePath).toLowerCase();
 
   if (fileExtension === ".pdf") {
     const buffer = await fs.readFile(filePath);
     const uint8Array = new Uint8Array(buffer);
     content = await pdf2md(uint8Array);
-    console.log("fileChunks:", content); // Added for debugging by Ougrid D.
+    chunks = content.split("\n\n").map((chunk) => chunk.trim());
+    console.log("fileChunks:", chunks);
   } else {
     content = await fs.readFile(filePath, "utf8");
+    chunks = content.split("\n\n").map((chunk) => chunk.trim());
   }
 
-  return content;
+  return { document: content, chunks };
 };
 
 // Asynchronous function to recursively find files and process them
